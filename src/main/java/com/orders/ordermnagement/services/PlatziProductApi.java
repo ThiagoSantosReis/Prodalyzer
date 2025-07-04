@@ -7,7 +7,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class PlatziProductApi {
-    public String getJsonData(String strAdress){
+    public static String getJsonData(String strAdress){
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(strAdress))

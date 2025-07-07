@@ -34,6 +34,7 @@ public class Principal {
 				0. Exit
 				1. Add product to your personal list
 				2. List all products at your list
+				3. List all products by price greater than
 				>
 				""";
 
@@ -70,14 +71,12 @@ public class Principal {
             return;
         }
 
-        Category managedCategory = saveOrGetCategory(product.getCategory());
-        product.setCategory(managedCategory);
-
         repository.save(product);
         System.out.println("Product added successfully.");
     }
 
-    private Category saveOrGetCategory(Category category) {
+
+    /*private Category saveOrGetCategory(Category category) {
         Optional<Category> existingCategory = ctgRepository.findByName(category.getName());
 
         if (existingCategory.isPresent()) {
@@ -91,7 +90,7 @@ public class Principal {
             return ctgRepository.findByName(category.getName())
                     .orElseThrow(() -> new RuntimeException("Unexpected error: category not found after save failure"));
         }
-    }
+    }*/
 
 
     private Product getProductData() {
@@ -100,7 +99,14 @@ public class Principal {
                 String json = PlatziProductApi.getJsonData(ADRESS);
                 List<ProductDto> productDtoList = cvs.getDataList(json, new TypeReference<List<ProductDto>>() {});
                 products = productDtoList.stream()
-                        .map(data -> new Product(data))
+                        .map(data -> {
+                            Product p = new Product(data);
+                            String categoryName = data.category().name();
+                            Category category = ctgRepository.findByName(categoryName)
+                                    .orElseGet(() -> ctgRepository.save(new Category(categoryName)));
+                            p.setCategory(category);
+                            return p;
+                        })
                         .collect(Collectors.toList());
             }
 

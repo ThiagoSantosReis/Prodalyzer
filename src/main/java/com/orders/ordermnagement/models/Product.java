@@ -13,7 +13,7 @@ public class Product {
     @Column(name = "name")
     private String title;
     private Double price;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "category_id")
     private Category category;
 

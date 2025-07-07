@@ -8,6 +8,9 @@ public record CategoryDto(
         @JsonAlias("id") Long id,
         @JsonAlias("name") String name
 ) {
+    private String getName(){
+        return name;
+    }
     @Override
     public String toString() {
         return "CategoryDto{" +

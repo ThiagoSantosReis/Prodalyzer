@@ -53,11 +53,20 @@ public class Principal {
                 break;
                 case 2: listAllProducts();
                 break;
+                case 3: listAllProductsByPrice();
+                break;
                 default:
                     System.out.println("Invalid option");
             }
         }
 
+    }
+
+    private void listAllProductsByPrice() {
+        System.out.println("Enter a price: ");
+        double price = Integer.parseInt(sc.nextLine());
+        List<Product> productsList = repository.findByPriceGreaterThan(price);
+        productsList.forEach(p -> System.out.println(p.getTitle() + " - $"+p.getPrice()+" - "+p.getCategory().getName()));
     }
 
     private void listAllProducts() {
